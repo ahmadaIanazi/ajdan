@@ -10,7 +10,7 @@ interface RoleState {
 export const useRoleStore = create<RoleState>()(
   persist(
     (set) => ({
-      role: "visitor",
+      role: "employee",
       setRole: (role) => set({ role }),
     }),
     {

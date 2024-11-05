@@ -5,20 +5,24 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, Loader2, PlusCircle, TrashIcon } from "lucide-react";
 import { format } from "date-fns";
-import { useEmployeeStore } from "@/store/use-employee-store";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-
 import { cn } from "@/lib/utils";
 import { employeeSchema, type EmployeeFormValues } from "@/lib/validations/employee";
 import { useToast } from "@/hooks/use-toast";
+import { addEmployee } from "@/app/actions/employee";
+import { Dialog } from "@/components/ui/dialog";
+import type { Employee } from "@/types/employee";
 
-export function AddEmployeeForm() {
+interface AddEmployeeFormProps {
+  onSuccess?: (employee: Employee) => void;
+}
+
+export function AddEmployeeForm({ onSuccess }: AddEmployeeFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const addEmployee = useEmployeeStore((state) => state.addEmployee);
   const { toast } = useToast();
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(employeeSchema),
@@ -45,17 +49,23 @@ export function AddEmployeeForm() {
     try {
       setIsSubmitting(true);
 
-      // Add a small delay to prevent spam submissions
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const result = await addEmployee(data);
 
-      const newEmployee = {
-        id: crypto.randomUUID(),
+      if (!result.success) {
+        toast({
+          title: "Error",
+          description: result.error || "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const newEmployee: Employee = {
+        id: result.data.id,
         ...data,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-
-      addEmployee(newEmployee);
 
       toast({
         title: "Success",
@@ -63,7 +73,9 @@ export function AddEmployeeForm() {
       });
 
       form.reset();
+      onSuccess?.(newEmployee);
     } catch (error) {
+      console.error("Error adding employee:", error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
@@ -84,7 +96,7 @@ export function AddEmployeeForm() {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input placeholder='John Doe' {...field} />
+                <Input placeholder='Mohammed Ajdan' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -211,7 +223,7 @@ export function AddEmployeeForm() {
 
         <Button type='submit' disabled={isSubmitting}>
           {isSubmitting && <Loader2 className='w-4 h-4 mr-2 animate-spin' />}
-          Add Employee
+          Submit
         </Button>
       </form>
     </Form>

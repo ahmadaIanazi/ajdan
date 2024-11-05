@@ -24,12 +24,13 @@ export function AddEmployeeDialog({ onEmployeeAdded, onSuccess }: AddEmployeeDia
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <PlusCircle className='w-4 h-4 mr-2' />
-          Add Employee
+        <Button size='sm' className='whitespace-nowrap'>
+          <PlusCircle className='h-4 w-4 mr-2' />
+          <span className='hidden sm:inline'>Add Employee</span>
+          <span className='sm:hidden'>Add</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className='max-w-2xl max-h-[90vh] overflow-y-auto'>
+      <DialogContent className='w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6'>
         <DialogHeader>
           <DialogTitle>Add New Employee</DialogTitle>
           <DialogDescription>Fill in the employee details below. All fields marked with * are required.</DialogDescription>

@@ -103,33 +103,37 @@ export function EmployeeList() {
   }
 
   return (
-    <div className='space-y-6'>
-      <div className='flex items-center justify-between gap-4'>
-        <div className='flex items-center gap-2 flex-1'>
+    <div className='space-y-4 sm:space-y-6'>
+      <div className='flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between'>
+        <div className='w-full sm:w-auto flex items-center gap-2'>
           <Search className='w-4 h-4 text-muted-foreground' />
-          <Input placeholder='Search by name, designation, or qualification...' value={search} onChange={(e) => setSearch(e.target.value)} className='max-w-sm' />
-          {debouncedSearch && <p className='text-sm text-muted-foreground'>Found {filteredAndSortedEmployees.length} results</p>}
+          <Input placeholder='Search by name, designation, or qualifications...' value={search} onChange={(e) => setSearch(e.target.value)} className='w-full sm:w-[300px]' />
+          {debouncedSearch && <span className='hidden sm:inline text-sm text-muted-foreground'>Found {filteredAndSortedEmployees.length} results</span>}
         </div>
-        <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-          <SelectTrigger className='w-[180px]'>
-            <SelectValue placeholder='Sort by' />
-          </SelectTrigger>
-          <SelectContent>
-            {sortOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {(role === "admin" || role === "employee") && <AddEmployeeDialog onEmployeeAdded={handleEmployeeAdded} onSuccess={loadEmployees} />}
+        <div className='flex items-center gap-2 sm:gap-4'>
+          <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
+            <SelectTrigger className='w-[140px] sm:w-[180px]'>
+              <SelectValue placeholder='Sort by' />
+            </SelectTrigger>
+            <SelectContent>
+              {sortOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {(role === "admin" || role === "employee") && <AddEmployeeDialog onEmployeeAdded={handleEmployeeAdded} onSuccess={loadEmployees} />}
+        </div>
       </div>
 
+      {debouncedSearch && <p className='sm:hidden text-sm text-muted-foreground text-center'>Found {filteredAndSortedEmployees.length} results</p>}
+
       {filteredAndSortedEmployees.length === 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>{debouncedSearch ? "No matching employees found" : "No employees found"}</CardTitle>
-            <CardDescription>
+        <Card className='mt-4'>
+          <CardHeader className='space-y-1'>
+            <CardTitle className='text-xl'>{debouncedSearch ? "No matching employees found" : "No employees found"}</CardTitle>
+            <CardDescription className='text-sm'>
               {debouncedSearch
                 ? "Try adjusting your search terms"
                 : role === "admin"
@@ -141,7 +145,7 @@ export function EmployeeList() {
           </CardHeader>
         </Card>
       ) : (
-        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
           {filteredAndSortedEmployees.map((employee) => (
             <EmployeeCard key={employee.id} employee={employee} onDelete={handleEmployeeDeleted} />
           ))}

@@ -29,27 +29,27 @@ interface EmployeeCardProps {
 
 function getInitials(name: string) {
   return name
-    .split(' ')
-    .map(part => part[0])
-    .join('')
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
     .toUpperCase()
-    .slice(0, 2)
+    .slice(0, 2);
 }
 
 // Generate a consistent color based on the name
 function getAvatarColor(name: string) {
   const colors = [
-    'bg-red-100 text-red-700',
-    'bg-green-100 text-green-700',
-    'bg-blue-100 text-blue-700',
-    'bg-yellow-100 text-yellow-700',
-    'bg-purple-100 text-purple-700',
-    'bg-pink-100 text-pink-700',
-    'bg-indigo-100 text-indigo-700',
-  ]
-  
-  const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return colors[index % colors.length]
+    "bg-red-100 text-red-700",
+    "bg-green-100 text-green-700",
+    "bg-blue-100 text-blue-700",
+    "bg-yellow-100 text-yellow-700",
+    "bg-purple-100 text-purple-700",
+    "bg-pink-100 text-pink-700",
+    "bg-indigo-100 text-indigo-700",
+  ];
+
+  const index = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[index % colors.length];
 }
 
 export function EmployeeCard({ employee, onDelete }: EmployeeCardProps) {
@@ -95,20 +95,20 @@ export function EmployeeCard({ employee, onDelete }: EmployeeCardProps) {
 
   return (
     <>
-      <Card>
+      <Card className='h-full'>
         <CardHeader>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center space-x-4'>
-              <Avatar className={`h-10 w-10 ${avatarColor}`}>
+          <div className='flex items-start sm:items-center justify-between gap-4'>
+            <div className='flex items-start sm:items-center gap-3 sm:gap-4'>
+              <Avatar className={`h-10 w-10 shrink-0 ${avatarColor}`}>
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
-              <div>
-                <CardTitle>{employee.name}</CardTitle>
-                <CardDescription>{employee.designation}</CardDescription>
+              <div className='min-w-0'>
+                <CardTitle className='text-base sm:text-lg truncate'>{employee.name}</CardTitle>
+                <CardDescription className='text-sm truncate'>{employee.designation}</CardDescription>
               </div>
             </div>
             {role === "admin" && (
-              <Button variant='ghost' size='icon' className='text-destructive hover:text-destructive/90' onClick={() => setShowDeleteDialog(true)} disabled={isDeleting}>
+              <Button variant='ghost' size='icon' className='text-destructive hover:text-destructive/90 shrink-0' onClick={() => setShowDeleteDialog(true)} disabled={isDeleting}>
                 <Trash2 className='h-4 w-4' />
               </Button>
             )}
@@ -119,10 +119,12 @@ export function EmployeeCard({ employee, onDelete }: EmployeeCardProps) {
             <p className='text-sm'>Age: {employee.age}</p>
             <div className='space-y-1'>
               <p className='text-sm font-medium'>Qualifications:</p>
-              <ul className='text-sm list-disc list-inside'>
+              <ul className='text-sm list-disc list-inside space-y-1'>
                 {employee.qualifications.map((qual) => (
-                  <li key={qual.id}>
-                    {qual.designation} - {qual.institution} ({new Date(qual.yearOfCompletion).getFullYear()})
+                  <li key={qual.id} className='line-clamp-2'>
+                    <span className='inline-block'>
+                      {qual.designation} - {qual.institution} ({new Date(qual.yearOfCompletion).getFullYear()})
+                    </span>
                   </li>
                 ))}
               </ul>

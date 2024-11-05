@@ -1,6 +1,7 @@
 import { EmployeeList } from "@/components/employee-list";
 import Logo from "@/components/logo";
 import { RoleSelector } from "@/components/role-selector";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function HomePage() {
   return (
@@ -10,7 +11,10 @@ export default function HomePage() {
           <Logo />
           <h1 className='text-3xl font-bold'>Employee Directory</h1>
         </div>
-        <RoleSelector />
+        <div className='flex items-center gap-4'>
+          <ThemeToggle />
+          <RoleSelector />
+        </div>
       </header>
       <main>
         <EmployeeList />

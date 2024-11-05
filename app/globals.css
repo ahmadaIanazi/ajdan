@@ -68,5 +68,13 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-y: hidden;
+  }
+  input {
+    @apply text-base; /* This sets the font size to 16px */
+  }
+  html {
+    overflow-y: hidden;
   }
 }

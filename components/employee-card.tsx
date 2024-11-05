@@ -99,7 +99,7 @@ export function EmployeeCard({ employee, onDelete }: EmployeeCardProps) {
         <CardHeader>
           <div className='flex items-start sm:items-center justify-between gap-4'>
             <div className='flex items-start sm:items-center gap-3 sm:gap-4'>
-              <Avatar className={`h-10 w-10 shrink-0 ${avatarColor}`}>
+              <Avatar className={`h-10 w-10 ${avatarColor}`}>
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
               <div className='min-w-0'>

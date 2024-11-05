@@ -12,8 +12,11 @@ export default function HomePage() {
           <h1 className="text-2xl sm:text-3xl font-bold">Employee Directory</h1>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
-          <ThemeToggle />
+          <div className="flex flex-row items-center gap-2">
+            <label>Selete a role:</label>
           <RoleSelector />
+          </div>
+          <ThemeToggle />
         </div>
       </header>
       <main>
